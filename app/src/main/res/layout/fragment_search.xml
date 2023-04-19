@@ -76,7 +76,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:showAnimationBehavior="outward"
         app:hideAnimationBehavior="inward"
-        app:minHideDelay="@integer/material_motion_duration_long_1"
         />
 
 

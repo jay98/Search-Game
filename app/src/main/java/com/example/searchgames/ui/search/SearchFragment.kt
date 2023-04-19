@@ -1,24 +1,25 @@
 package com.example.searchgames.ui.search
 
-import android.app.Activity
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.searchgames.MainActivity
 import com.example.searchgames.R
 import com.example.searchgames.databinding.FragmentSearchBinding
 import com.example.searchgames.ui.viewmodel.SearchGamesViewModel
-import com.example.searchgames.util.EndlessRecyclerViewScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -74,9 +75,11 @@ class SearchFragment @Inject constructor() : Fragment() {
         binding.searchResultsRecyclerview.layoutManager = GridLayoutManager(context, 2)
 
         val onScrollListener = object :
-            EndlessRecyclerViewScrollListener(binding.searchResultsRecyclerview.layoutManager as GridLayoutManager) {
-            override fun onLoadMore() {
-                viewModel.loadMoreGames()
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.loadMoreGames()
+                }
             }
         }
         binding.searchResultsRecyclerview.addOnScrollListener(onScrollListener)
@@ -92,6 +95,17 @@ class SearchFragment @Inject constructor() : Fragment() {
     }
 
     private fun setUpSearchBar() {
+
+        // hide keyboard on search press
+        binding.searchEditText.setOnEditorActionListener { _, _, _ ->
+            try {
+                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, 0)
+            } catch (e: Exception) {
+                true
+            }
+        }
+
         binding.searchEditText.doAfterTextChanged { query ->
             if (::textChangeCountDownJob.isInitialized)
                 textChangeCountDownJob.cancel()
