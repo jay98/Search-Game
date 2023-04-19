@@ -21,6 +21,7 @@ object SearchFragmentHelper {
                     binding.searchProgressBar.visibility = View.GONE
                     binding.loadMoreProgressBar.visibility = View.GONE
                     binding.initialSearchView.visibility = View.VISIBLE
+                    adapter.submitList(viewModel.searchResult.value)
                 }
                 is UiState.Success -> {
                     binding.searchProgressBar.visibility = View.GONE
