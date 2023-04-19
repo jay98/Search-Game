@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Search Games</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="search_fragment_label">Search Games</string>
+    <string name="game_detail_fragment_label">Game Details</string>
+    <string name="search_result_initial_load">Nothing to show here.</string>
+    <string name="search_games">Start typing to search</string>
+</resources>

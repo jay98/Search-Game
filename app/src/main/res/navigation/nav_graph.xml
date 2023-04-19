@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/SearchFragment">
+
+    <fragment
+        android:id="@+id/SearchFragment"
+        android:name="com.example.searchgames.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_SearchFragment_to_GameDetailFragment"
+            app:destination="@id/GameDetailFragment"
+            android:label="@string/search_fragment_label"
+            app:enterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/GameDetailFragment"
+        android:name="com.example.searchgames.ui.gamedetails.GameDetailsFragment"
+        android:label="@string/game_detail_fragment_label"
+        tools:layout="@layout/fragment_game_details">
+        <action
+            android:id="@+id/action_GameDetailFragment_to_SearchFragment"
+            app:destination="@id/SearchFragment" />
+        <argument
+            android:name="game-id"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+</navigation>
