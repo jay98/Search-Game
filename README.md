@@ -9,7 +9,7 @@ Tests still ion preogress hoping to get those done before the interview
 #### App Launch - loads some games without any filter
 https://user-images.githubusercontent.com/23137381/233158444-18a05d52-5875-438e-9f54-8a66ecaad847.mp4
 
-#### Live Search and navigation
+#### Live Search and navigation (Description page renders the htm recived from the api)
 https://user-images.githubusercontent.com/23137381/233159098-2dc9b7ac-5512-48f2-9a53-46d228af8314.mp4
 
 #### Endless scroll
