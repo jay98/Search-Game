@@ -6,11 +6,11 @@ import com.example.searchgames.ui.search.SearchResultTransformer
 import com.example.searchgames.ui.viewmodel.SearchGamesViewModel
 import com.example.searchgames.util.DispatcherProvider
 import io.mockk.*
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -35,10 +35,10 @@ class SearchGamesViewModelTest {
     @Test
     fun `searchGame with empty search term should not trigger searchRepository#searchGames when not the initial load`() {
 
-        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
         // given
         coEvery { searchRepository.searchGames(any()) } returns flow { }
         coEvery { dispatcherProvider.main } returns Dispatchers.Unconfined
+        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
 
         // when
         viewModel.searchGame()
@@ -51,11 +51,12 @@ class SearchGamesViewModelTest {
     @Test
     fun `searchGame with new search term should trigger searchRepository#searchGames`() = runBlocking {
         // given
-        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
         val searchTerm = "new search term"
         coEvery { searchRepository.searchGames(searchTerm) } returns flowOf(MockData.searchResponse)
+        coEvery { searchRepository.searchGames("") } returns flowOf(MockData.searchResponse)
         coEvery { searchResultTransformer.transform(MockData.searchResponse) } returns listOf(MockData.searchResultViewData)
         every { dispatcherProvider.main } returns Dispatchers.Unconfined
+        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
 
 
         // when
@@ -70,12 +71,13 @@ class SearchGamesViewModelTest {
     @Test
     fun `loadMoreGames should trigger searchRepository#loadMoreGames`() = runBlocking {
         // given
-        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
         val searchTerm = "load more games"
         every { dispatcherProvider.main } returns Dispatchers.Unconfined
+        coEvery { searchRepository.searchGames("") } returns flowOf(MockData.searchResponse)
         coEvery { searchRepository.loadMoreGames(searchTerm, any()) } returns flowOf(MockData.searchResponse)
         coEvery { searchResultTransformer.transform(MockData.searchResponse) } returns listOf(MockData.searchResultViewData)
         coEvery { searchRepository.searchGames(searchTerm) } returns flowOf(MockData.searchResponse)
+        viewModel = SearchGamesViewModel(searchRepository, dispatcherProvider, searchResultTransformer)
 
 
         viewModel.searchGame(searchTerm)

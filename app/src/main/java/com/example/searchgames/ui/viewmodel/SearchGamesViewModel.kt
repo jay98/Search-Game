@@ -1,6 +1,5 @@
 package com.example.searchgames.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchgames.data.repository.SearchRepository
@@ -29,6 +28,10 @@ class SearchGamesViewModel @Inject constructor(
     private var totalResults: Int = 0
     private var currentOffset: Int = 0
     private var currentSearchTerm: String = ""
+
+    init {
+        searchGame()
+    }
 
 
     fun searchGame(searchTerm: String = "") {

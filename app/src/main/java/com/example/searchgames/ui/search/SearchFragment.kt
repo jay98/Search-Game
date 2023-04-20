@@ -1,6 +1,5 @@
 package com.example.searchgames.ui.search
 
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -57,11 +56,6 @@ class SearchFragment @Inject constructor() : Fragment() {
         setUpSearchBar()
         setupObserver()
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel.searchGame()
     }
 
     override fun onDestroyView() {
